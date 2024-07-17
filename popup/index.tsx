@@ -1,24 +1,38 @@
-import { useState } from "react"
-
+import { getConfig } from '../uitls/utils'
+import { useEffect,useState } from 'react'
+import "../style.css"
 function IndexPopup() {
-  const [data, setData] = useState("")
-
+  const [list, setList] = useState([]);
+  console.log('ren');
+  useEffect(()=>{
+    const fetchData = async () => {
+      const storedData = await getConfig()
+      console.log('storedData',storedData);
+      setList(storedData.list)
+    };
+    fetchData();
+  },[])
+  const executeScript = (script: string) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const activeTab = tabs[0];
+      if (activeTab?.id !== undefined) {
+        chrome.runtime.sendMessage({
+          action: "executeScript",
+          tabId: activeTab.id,
+          script
+        });
+      }
+    });
+  }; 
   return (
-    <div
-      style={{
-        padding: 16
-      }}>
-      <h2>
-        Welcome to your{" "}
-        <a href="https://www.plasmo.com" target="_blank">
-          Plasmo
-        </a>{" "}
-        Extension!
-      </h2>
-      <input onChange={(e) => setData(e.target.value)} value={data} />
-      <a href="/tabs/slide.html" target="_blank">
-        View Docs
-      </a>
+    <div className='p-4'>
+        {list.map(item=>{
+          return <div className="mb-1 bg-gray-400 p-1 w-44 cursor-pointer select-none text-blue-100 rounded-sm	text-lg "
+          onClick={()=>executeScript(item.code)}
+          >
+           {item.title}
+          </div>
+        })}
     </div>
   )
 }

@@ -1,0 +1,14 @@
+{
+    "list": [
+        {
+            "title": "Clear all timer",
+            "description": "clear all Timemout and Interval on this page",
+            "code": "alert(11);\n let id = window.setTimeout(() => {},); while (id--) { window.clearTimeout(id); window.clearInterval(id);}"
+        },
+        {
+            "title": "log message",
+            "description": "message",
+            "code": "console.log('success')"
+        }
+    ]
+}

@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 const options= ()=> {
-  const [data, setData] = useState("123")
+  const [data, setData] = useState("1222s3")
 
   return  (<div>{data}</div>)
   
